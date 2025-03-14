@@ -112,7 +112,7 @@ def get_response_least_to_most(conversation):
         'role':'user',
         'content': prompt
     }], 
-    options=dict(temperature=0.0, num_ctx=8192)
+    options=dict(temperature=0.0, num_ctx=8192))
     output = output['message']['content']
     return output
 
