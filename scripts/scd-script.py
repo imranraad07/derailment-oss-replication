@@ -139,10 +139,12 @@ with open(output_csv, mode='w', newline='', encoding='utf-8') as file:
         current_coversation = ''
         is_toxic = 0
         for index, row in group.iterrows():
-            if is_toxic == 1:
+            if row['toxic'] == 1:
+		is_toxic = 1
                 break
 
             current_coversation = current_coversation + "\n" + row['text'] 
+		
             issue_id = row['issue_id']
             is_toxic = row['toxic']
 
