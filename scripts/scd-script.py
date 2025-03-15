@@ -143,9 +143,9 @@ with open(output_csv, mode='w', newline='', encoding='utf-8') as file:
         comment_counter = 0
         for index, row in group.iterrows():
             issue_id = row['issue_id']
-            is_toxic = 1
 
             if row['toxic'] == 1:
+                is_toxic = 1
                 break
 
             current_coversation = current_coversation + "\n" + row['text'] 
