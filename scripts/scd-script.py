@@ -121,7 +121,8 @@ def get_response(summary):
     output = ollama.chat(model="llama3.1:70b", messages=[{
         'role':'user',
         'content': prompt
-    }])
+    }],
+    options=dict(temperature=0.0))
     output = output['message']['content']
     return output
 
@@ -132,7 +133,7 @@ data['text'] = data['text'].astype(str).fillna('')
 data['text'] = data['speaker'] + ': <<< ' + data['text'] + ' >>>'
 toxic_counter = 0
 nontoxic_counter = 0
-output_csv = 'test.csv'
+output_csv = 'path/to/output/dataset'
 with open(output_csv, mode='w', newline='', encoding='utf-8') as file:
     writer = csv.DictWriter(file, fieldnames=['issue_id', 'response', 'possibility_toxic', 'actually_toxic'])
     writer.writeheader()
