@@ -130,24 +130,36 @@ input_csv = 'path/to/input/dataset'
 data = pd.read_csv(input_csv)
 data['text'] = data['text'].astype(str).fillna('')
 data['text'] = data['speaker'] + ': <<< ' + data['text'] + ' >>>'
-
-output_csv = 'path/to/output/dataset'
+toxic_counter = 0
+nontoxic_counter = 0
+output_csv = 'test.csv'
 with open(output_csv, mode='w', newline='', encoding='utf-8') as file:
     writer = csv.DictWriter(file, fieldnames=['issue_id', 'response', 'possibility_toxic', 'actually_toxic'])
     writer.writeheader()
     for idx, group in data.groupby('issue_id'):
         current_coversation = ''
         is_toxic = 0
+        comment_counter = 0
         for index, row in group.iterrows():
+            issue_id = row['issue_id']
+            is_toxic = 1
+
             if row['toxic'] == 1:
-		is_toxic = 1
                 break
 
             current_coversation = current_coversation + "\n" + row['text'] 
-		
-            issue_id = row['issue_id']
-            is_toxic = row['toxic']
+            comment_counter = comment_counter + 1 
 
+        if is_toxic:
+            toxic_counter = toxic_counter + 1
+        else:
+            nontoxic_counter = nontoxic_counter + 1
+
+        if comment_counter < 1:
+            print("Zero Comment")
+            continue
+
+        # print (toxic_counter, nontoxic_counter, comment_counter, is_toxic)
         try:
             response = get_response_least_to_most(current_coversation)
             response2 = get_response(response)
